@@ -12,5 +12,9 @@
 
 @property (strong, nonatomic) id detailItem;
 
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *personImage;
+@property (weak, nonatomic) IBOutlet UITextField *personCountry;
+@property (weak, nonatomic) IBOutlet UITextField *personName;
+
+- (IBAction)editingChanged:(id)sender;
 @end

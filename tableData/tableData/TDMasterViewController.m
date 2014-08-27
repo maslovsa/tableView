@@ -47,10 +47,11 @@ const int MAX_IMAGE = 37;
                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"HH:mm:ss.SSSS"];
                 NSString *dateString = [formatter stringFromDate:[NSDate date]];
-                [[self.persons objectAtIndex:index] setPersonCountry: dateString];
+                TDPerson *person =[self.persons objectAtIndex:index];
+                [person setPersonCountry: dateString];
                 
                 int indexImage = arc4random_uniform(MAX_IMAGE) + 1;
-                [[self.persons objectAtIndex:index] setPersonImage:[NSString stringWithFormat:@"%d.png", indexImage]];
+                [person setPersonImage:[NSString stringWithFormat:@"%d.png", indexImage]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadData];
@@ -98,23 +99,16 @@ const int MAX_IMAGE = 37;
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
+-(void)didMoveToParentViewController:(UIViewController *)parent{
+    [self.tableView reloadData];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = _persons[indexPath.row];
-        [[segue destinationViewController] setDetailItem:object];
+        TDPerson *person = _persons[indexPath.row];
+        [[segue destinationViewController] setDetailItem:person];
     }
 }
 

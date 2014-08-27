@@ -7,6 +7,7 @@
 //
 
 #import "TDDetailViewController.h"
+#import "TDPerson.h"
 
 @interface TDDetailViewController ()
 - (void)configureView;
@@ -21,24 +22,24 @@
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
         
-        // Update the view.
         [self configureView];
     }
 }
 
 - (void)configureView
 {
-    // Update the user interface for the detail item.
-
     if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
+        TDPerson *person = (TDPerson *)self.detailItem;
+        self.personName.text = person.personName;
+        self.personCountry.text = person.personCountry;
+        self.personImage.image =[UIImage imageNamed: person.personImage];
     }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+	self.personCountry.enabled = NO;
     [self configureView];
 }
 
@@ -46,6 +47,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)editingChanged:(id)sender {
+    TDPerson *person = (TDPerson *)self.detailItem;
+    [person setPersonName: self.personName.text];
+    NSLog(@"new name %@", self.personName.text);
 }
 
 @end
