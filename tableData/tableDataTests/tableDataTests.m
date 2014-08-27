@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "TDPerson.h"
 
 @interface tableDataTests : XCTestCase
 
@@ -26,9 +27,11 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testPersonCreation
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    TDPerson *person1 = [[TDPerson alloc] initWithName:@"Alex" andCounty:@"Ru" andImage:@"1.png"];
+    TDPerson *person2 = [[TDPerson alloc] initWithName:@"Bob" andCounty:@"Ge" andImage:@"2.png"];
+    XCTAssertTrue(person2.personId != person1.personId, @"person2.personId should great than person2.personId");
 }
 
 @end

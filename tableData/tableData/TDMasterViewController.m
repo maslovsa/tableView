@@ -15,7 +15,7 @@ static NSArray *_countries;
 
 @interface TDMasterViewController () {
     BOOL _isEnabled;
-    
+    NSMutableDictionary *_cache;
 }
 @end
 
@@ -25,6 +25,7 @@ static NSArray *_countries;
 
 @synthesize persons = _persons;
 
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -33,6 +34,8 @@ static NSArray *_countries;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self loadImages];
+    
     _isEnabled = NO;
     _countries = @[@"RU",@"UKR",@"BEL",@"JAP",@"ISP",@"US",@"UK",@"GE",@"FR",@"BRA"];
     
@@ -74,6 +77,15 @@ static NSArray *_countries;
     });
 }
 
+- (void)loadImages {
+    _cache = [[NSMutableDictionary new] init];
+    int index = 0;
+    while (index < MAX_IMAGE) {
+        NSString *file = [NSString stringWithFormat:@"%d.png", ++index];
+        [_cache setObject:[UIImage imageNamed: file] forKey:file];
+    }
+}
+
 - (void) updateTableView:(NSNotification *) notification
 {
     if ([[notification name] isEqualToString:@"updatePersons"])
@@ -87,6 +99,7 @@ static NSArray *_countries;
 
 - (void)didReceiveMemoryWarning
 {
+    NSLog(@"memory warning!");
     [super didReceiveMemoryWarning];
 }
 
@@ -119,7 +132,7 @@ static NSArray *_countries;
     TDPerson *person = [self.persons objectAtIndex:indexPath.row];
     cell.textLabel.text = person.personName;
     cell.detailTextLabel.text = person.personCountry;
-    cell.imageView.image = [UIImage imageNamed:person.personImage];
+    cell.imageView.image = [_cache objectForKey: person.personImage];
     return cell;
 }
 
