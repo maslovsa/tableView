@@ -54,7 +54,7 @@ static NSArray *_countries;
                 [NSThread sleepForTimeInterval:.05]; // ONLY - for more cool view!!!
                 
                 int index = arc4random_uniform(_persons.count);
-                NSLog(@"using %d", index);
+                
                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"HH:mm:ss.SSSS"];
                 TDPerson *person =[self.persons objectAtIndex:index];
@@ -67,7 +67,7 @@ static NSArray *_countries;
                 [person setPersonImage:[NSString stringWithFormat:@"%d.png", indexImage]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatePersons" object:self];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatePersons" object: [NSNumber numberWithInt:person.personId]];
                 });
             }
         }

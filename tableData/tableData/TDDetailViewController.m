@@ -13,7 +13,10 @@
 - (void)configureView;
 @end
 
-@implementation TDDetailViewController
+@implementation TDDetailViewController {
+    int _personId;
+    TDPerson *_person;
+}
 
 #pragma mark - Managing the detail item
 
@@ -21,7 +24,7 @@
 {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
-        
+        _person = (TDPerson *)self.detailItem;
         [self configureView];
     }
 }
@@ -29,10 +32,9 @@
 - (void)configureView
 {
     if (self.detailItem) {
-        TDPerson *person = (TDPerson *)self.detailItem;
-        self.personName.text = person.personName;
-        self.personCountry.text = person.personCountry;
-        self.personImage.image =[UIImage imageNamed: person.personImage];
+        self.personName.text = _person.personName;
+        self.personCountry.text = _person.personCountry;
+        self.personImage.image =[UIImage imageNamed: _person.personImage];
     }
 }
 
@@ -55,8 +57,10 @@
 
 - (void) updateTableView:(NSNotification *) notification
 {
-    if ([[notification name] isEqualToString:@"updatePersons"])
+    if ([[notification name] isEqualToString:@"updatePersons"] && [[notification object] integerValue] == _person.personId ) {
         [self configureView];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,8 +69,7 @@
 }
 
 - (IBAction)editingChanged:(id)sender {
-    TDPerson *person = (TDPerson *)self.detailItem;
-    [person setPersonName: self.personName.text];
+    [_person setPersonName: self.personName.text];
     NSLog(@"new name %@", self.personName.text);
 }
 
