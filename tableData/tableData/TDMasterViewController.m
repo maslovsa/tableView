@@ -10,6 +10,8 @@
 #import "TDDetailViewController.h"
 #import "TDPerson.h"
 
+const int MAX_IMAGE = 37;
+
 @interface TDMasterViewController () {
     __block BOOL _isEnabled;
 }
@@ -27,7 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _isEnabled = YES;
+    _isEnabled = NO;
     
     UIBarButtonItem *startButton = [[UIBarButtonItem alloc] initWithTitle:@"Start" style:UIBarButtonItemStylePlain target:self action:@selector(start:)];
     self.navigationItem.leftBarButtonItem = startButton;
@@ -39,12 +41,16 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         while (YES) {
             if (_isEnabled) {
+                // [NSThread sleepForTimeInterval:.05]; // for more cool view
                 int index = arc4random_uniform(_persons.count);
                 NSLog(@"using %d", index);
                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"HH:mm:ss.SSSS"];
                 NSString *dateString = [formatter stringFromDate:[NSDate date]];
                 [[self.persons objectAtIndex:index] setPersonCountry: dateString];
+                
+                int indexImage = arc4random_uniform(MAX_IMAGE) + 1;
+                [[self.persons objectAtIndex:index] setPersonImage:[NSString stringWithFormat:@"%d.png", indexImage]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadData];
@@ -88,6 +94,7 @@
     TDPerson *person = [self.persons objectAtIndex:indexPath.row];
     cell.textLabel.text = person.personName;
     cell.detailTextLabel.text = person.personCountry;
+    cell.imageView.image = [UIImage imageNamed:person.personImage];
     return cell;
 }
 

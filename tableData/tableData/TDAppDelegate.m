@@ -14,28 +14,29 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    TDPerson *person1 = [[TDPerson alloc] initWithName:@"Alex" andCounty:@"Ru"];
-    TDPerson *person2 = [[TDPerson alloc] initWithName:@"Bob" andCounty:@"Ge"];
-    TDPerson *person3 = [[TDPerson alloc] initWithName:@"Chack" andCounty:@"En"];
-    TDPerson *person4 = [[TDPerson alloc] initWithName:@"Dillan" andCounty:@"US"];
-    TDPerson *person5 = [[TDPerson alloc] initWithName:@"Edward" andCounty:@"US"];
-    TDPerson *person6 = [[TDPerson alloc] initWithName:@"Fil" andCounty:@"US"];
-    TDPerson *person7 = [[TDPerson alloc] initWithName:@"Geib" andCounty:@"En"];
-    TDPerson *person8 = [[TDPerson alloc] initWithName:@"Hue" andCounty:@"US"];
-    TDPerson *person9 = [[TDPerson alloc] initWithName:@"Ice" andCounty:@"US"];
-    TDPerson *person10 = [[TDPerson alloc] initWithName:@"Joe" andCounty:@"En"];
+    TDPerson *person1 = [[TDPerson alloc] initWithName:@"Alex" andCounty:@"Ru" andImage:@"1.png"];
+    TDPerson *person2 = [[TDPerson alloc] initWithName:@"Bob" andCounty:@"Ge" andImage:@"2.png"];
+    TDPerson *person3 = [[TDPerson alloc] initWithName:@"Chack" andCounty:@"En" andImage:@"3.png"];
+    TDPerson *person4 = [[TDPerson alloc] initWithName:@"Dillan" andCounty:@"US" andImage:@"4.png"];
+    TDPerson *person5 = [[TDPerson alloc] initWithName:@"Edward" andCounty:@"US" andImage:@"5.png"];
+    TDPerson *person6 = [[TDPerson alloc] initWithName:@"Fil" andCounty:@"US" andImage:@"6.png"];
+    TDPerson *person7 = [[TDPerson alloc] initWithName:@"Geib" andCounty:@"En" andImage:@"7.png"];
+    TDPerson *person8 = [[TDPerson alloc] initWithName:@"Hue" andCounty:@"US" andImage:@"8.png"];
+    TDPerson *person9 = [[TDPerson alloc] initWithName:@"Ice" andCounty:@"US" andImage:@"9.png"];
+    TDPerson *person10 = [[TDPerson alloc] initWithName:@"Joe" andCounty:@"En" andImage:@"10.png"];
     
-    TDPerson *person11 = [[TDPerson alloc] initWithName:@"Alex" andCounty:@"Ru"];
-    TDPerson *person12 = [[TDPerson alloc] initWithName:@"Bob" andCounty:@"Ge"];
-    TDPerson *person13 = [[TDPerson alloc] initWithName:@"Chack" andCounty:@"En"];
-    TDPerson *person14 = [[TDPerson alloc] initWithName:@"Dillan" andCounty:@"US"];
-    TDPerson *person15 = [[TDPerson alloc] initWithName:@"Edward" andCounty:@"US"];
-    TDPerson *person16 = [[TDPerson alloc] initWithName:@"Fil" andCounty:@"US"];
-    TDPerson *person17 = [[TDPerson alloc] initWithName:@"Geib" andCounty:@"En"];
-    TDPerson *person18 = [[TDPerson alloc] initWithName:@"Hue" andCounty:@"US"];
-    TDPerson *person19 = [[TDPerson alloc] initWithName:@"Ice" andCounty:@"US"];
-    TDPerson *person20 = [[TDPerson alloc] initWithName:@"Joe" andCounty:@"En"];
-    NSMutableArray *persons = [NSMutableArray arrayWithObjects:person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20,nil];
+    TDPerson *person11 = [[TDPerson alloc] initWithName:@"Alex" andCounty:@"Ru" andImage:@"11.png"];
+    TDPerson *person12 = [[TDPerson alloc] initWithName:@"Bob" andCounty:@"Ge" andImage:@"12.png"];
+    TDPerson *person13 = [[TDPerson alloc] initWithName:@"Chack" andCounty:@"En" andImage:@"13.png"];
+    TDPerson *person14 = [[TDPerson alloc] initWithName:@"Dillan" andCounty:@"US" andImage:@"14.png"];
+    TDPerson *person15 = [[TDPerson alloc] initWithName:@"Edward" andCounty:@"US" andImage:@"15.png"];
+    TDPerson *person16 = [[TDPerson alloc] initWithName:@"Fil" andCounty:@"US" andImage:@"16.png"];
+    TDPerson *person17 = [[TDPerson alloc] initWithName:@"Geib" andCounty:@"En" andImage:@"17.png"];
+    TDPerson *person18 = [[TDPerson alloc] initWithName:@"Hue" andCounty:@"US" andImage:@"18.png"];
+    TDPerson *person19 = [[TDPerson alloc] initWithName:@"Ice" andCounty:@"US" andImage:@"19.png"];
+    TDPerson *person20 = [[TDPerson alloc] initWithName:@"Joe" andCounty:@"En" andImage:@"20.png"];
+    
+    NSMutableArray *persons = [NSMutableArray arrayWithObjects:person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, nil];
     
     UINavigationController *navController = (UINavigationController *) self.window.rootViewController;
     TDMasterViewController *masterController = [navController.viewControllers objectAtIndex:0];

@@ -13,7 +13,8 @@
 @property (readonly) int personId;
 @property (strong) NSString *personName;
 @property (strong) NSString *personCountry;
+@property (strong) NSString *personImage;
 
-- (id)initWithName:(NSString*)name andCounty:(NSString*)country;
+- (id)initWithName:(NSString*)name andCounty:(NSString*)country andImage:(NSString*)image;
 
 @end
