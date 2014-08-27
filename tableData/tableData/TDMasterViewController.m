@@ -11,7 +11,7 @@
 #import "TDPerson.h"
 
 @interface TDMasterViewController () {
-    BOOL _isEnabled;
+    __block BOOL _isEnabled;
 }
 @end
 
@@ -27,33 +27,46 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _isEnabled = NO;
+    _isEnabled = YES;
     
     UIBarButtonItem *startButton = [[UIBarButtonItem alloc] initWithTitle:@"Start" style:UIBarButtonItemStylePlain target:self action:@selector(start:)];
     self.navigationItem.leftBarButtonItem = startButton;
     
     UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:@"Stop" style:UIBarButtonItemStylePlain target:self action:@selector(stop:)];
     self.navigationItem.rightBarButtonItem = stopButton;
-    
     self.title = @"Persons";
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        while (YES) {
+            if (_isEnabled) {
+                int index = arc4random_uniform(_persons.count);
+                NSLog(@"using %d", index);
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                [formatter setDateFormat:@"HH:mm:ss.SSSS"];
+                NSString *dateString = [formatter stringFromDate:[NSDate date]];
+                [[self.persons objectAtIndex:index] setPersonCountry: dateString];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
+        }
+    });
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)start:(id)sender
 {
     _isEnabled = YES;
-    NSLog(@"Start");
 }
 
 - (void)stop:(id)sender
 {
     _isEnabled = NO;
-    NSLog(@"Stop");
 }
 
 #pragma mark - Table View
@@ -86,29 +99,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [_objects removeObjectAtIndex:indexPath.row];
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-//    }
-}
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
 }
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
