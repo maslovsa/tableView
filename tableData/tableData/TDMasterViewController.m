@@ -11,13 +11,17 @@
 #import "TDPerson.h"
 
 const int MAX_IMAGE = 37;
+static NSArray *_countries;
 
 @interface TDMasterViewController () {
-    __block BOOL _isEnabled;
+    BOOL _isEnabled;
+    
 }
 @end
 
-@implementation TDMasterViewController
+@implementation TDMasterViewController {
+    
+}
 
 @synthesize persons = _persons;
 
@@ -30,35 +34,55 @@ const int MAX_IMAGE = 37;
 {
     [super viewDidLoad];
     _isEnabled = NO;
+    _countries = @[@"RU",@"UKR",@"BEL",@"JAP",@"ISP",@"US",@"UK",@"GE",@"FR",@"BRA"];
     
     UIBarButtonItem *startButton = [[UIBarButtonItem alloc] initWithTitle:@"Start" style:UIBarButtonItemStylePlain target:self action:@selector(start:)];
     self.navigationItem.leftBarButtonItem = startButton;
     
     UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:@"Stop" style:UIBarButtonItemStylePlain target:self action:@selector(stop:)];
     self.navigationItem.rightBarButtonItem = stopButton;
-    self.title = @"Persons";
+    self.title = @"Person locations";
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTableView:)
+                                                 name:@"updatePersons"
+                                               object:nil];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         while (YES) {
             if (_isEnabled) {
-                // [NSThread sleepForTimeInterval:.05]; // for more cool view
+                [NSThread sleepForTimeInterval:.05]; // ONLY - for more cool view!!!
+                
                 int index = arc4random_uniform(_persons.count);
                 NSLog(@"using %d", index);
                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"HH:mm:ss.SSSS"];
-                NSString *dateString = [formatter stringFromDate:[NSDate date]];
                 TDPerson *person =[self.persons objectAtIndex:index];
-                [person setPersonCountry: dateString];
+                int indexCountry = arc4random_uniform(_countries.count);
+                [person setPersonCountry: [NSString stringWithFormat:@"%@ since %@",
+                                           [_countries objectAtIndex:indexCountry],
+                                           [formatter stringFromDate:[NSDate date]]]];
                 
                 int indexImage = arc4random_uniform(MAX_IMAGE) + 1;
                 [person setPersonImage:[NSString stringWithFormat:@"%d.png", indexImage]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatePersons" object:self];
                 });
             }
         }
     });
+}
+
+- (void) updateTableView:(NSNotification *) notification
+{
+    if ([[notification name] isEqualToString:@"updatePersons"])
+        [self.tableView reloadData];
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning

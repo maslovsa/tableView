@@ -41,12 +41,27 @@
     [super viewDidLoad];
 	self.personCountry.enabled = NO;
     [self configureView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTableView:)
+                                                 name:@"updatePersons"
+                                               object:nil];
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) updateTableView:(NSNotification *) notification
+{
+    if ([[notification name] isEqualToString:@"updatePersons"])
+        [self configureView];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)editingChanged:(id)sender {
