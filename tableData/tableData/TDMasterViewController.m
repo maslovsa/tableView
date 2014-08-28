@@ -15,7 +15,7 @@ static NSArray *_countries;
 
 @interface TDMasterViewController () {
     BOOL _isEnabled;
-    NSMutableDictionary *_cache;
+    NSMutableDictionary *_imageCache;
 }
 @end
 
@@ -52,37 +52,34 @@ static NSArray *_countries;
                                                object:nil];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        while (YES) {
-            if (_isEnabled) {
-                [NSThread sleepForTimeInterval:.05]; // ONLY - for more cool view!!!
-                
-                int index = arc4random_uniform(_persons.count);
-                
-                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                [formatter setDateFormat:@"HH:mm:ss.SSSS"];
-                TDPerson *person =[self.persons objectAtIndex:index];
-                int indexCountry = arc4random_uniform(_countries.count);
-                [person setPersonCountry: [NSString stringWithFormat:@"%@ since %@",
-                                           [_countries objectAtIndex:indexCountry],
-                                           [formatter stringFromDate:[NSDate date]]]];
-                
-                int indexImage = arc4random_uniform(MAX_IMAGE) + 1;
-                [person setPersonImage:[NSString stringWithFormat:@"%d.png", indexImage]];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatePersons" object: [NSNumber numberWithInt:person.personId]];
-                });
+        
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"HH:mm:ss.SSSS"];
+            while (YES) {
+                if (_isEnabled) {
+                    [NSThread sleepForTimeInterval:.05]; // ONLY - for more cool view!!!
+                    
+                    TDPerson *person =[self.persons objectAtIndex: arc4random_uniform((int)_persons.count)];
+                    [person setPersonCountry: [NSString stringWithFormat:@"%@ since %@",
+                                               [_countries objectAtIndex:arc4random_uniform((int)_countries.count)],
+                                               [formatter stringFromDate:[NSDate date]]]];
+                    [person setPersonImage:[NSString stringWithFormat:@"%d.png", arc4random_uniform(MAX_IMAGE) + 1]];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updatePersons" object: [NSNumber numberWithInt:person.personId]];
+                    });
+                }
             }
-        }
+        
     });
 }
 
 - (void)loadImages {
-    _cache = [[NSMutableDictionary new] init];
+    _imageCache = [[NSMutableDictionary new] init];
     int index = 0;
     while (index < MAX_IMAGE) {
         NSString *file = [NSString stringWithFormat:@"%d.png", ++index];
-        [_cache setObject:[UIImage imageNamed: file] forKey:file];
+        [_imageCache setObject:[UIImage imageNamed: file] forKey:file];
     }
 }
 
@@ -132,7 +129,7 @@ static NSArray *_countries;
     TDPerson *person = [self.persons objectAtIndex:indexPath.row];
     cell.textLabel.text = person.personName;
     cell.detailTextLabel.text = person.personCountry;
-    cell.imageView.image = [_cache objectForKey: person.personImage];
+    cell.imageView.image = [_imageCache objectForKey: person.personImage];
     return cell;
 }
 

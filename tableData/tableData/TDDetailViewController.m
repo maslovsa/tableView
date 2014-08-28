@@ -42,6 +42,10 @@
 {
     [super viewDidLoad];
 	self.personCountry.enabled = NO;
+    self.personImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.personImage.layer.borderWidth = 0.5;
+    self.personImage.layer.cornerRadius = 5.0;
+    
     [self configureView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
